@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+       <!-- Launch all video and nodes for the pi3
+          These are many args to collect and pass to the video stream generator of the camera, but for now, only care about the stream provider. 
+             The rest are commented out for now.
+
+  	<arg name="camera_name" default="camera" />
+  	<arg name="set_camera_fps" default="30" />
+  	<arg name="buffer_queue_size" default="100" />
+  	<arg name="fps" default="30" />
+  	<arg name="frame_id" default="$(arg camera_name)" />
+        <arg name="camera_info_url" default="" />
+  	<arg name="flip_horizontal" default="false" />
+  	<arg name="flip_vertical" default="false" />
+        <arg name="width" default="0"/>
+        <arg name="height" default="0"/>
+	<arg name="visualize" default="false"/>
+        -->
+  	<!-- video_stream_provider can be a number as a video device or a url of a video stream -->
+  	<arg name="video_stream_provider" default="0" />
+ 
+     
+        <include file="$(find video_stream_opencv)/launch/camera.launch">
+           <arg name="video_stream_provider" value="$(arg video_stream_provider)"/>
+        </include>
+
+        <include file="$(find chair_pi3)/launch/chair.launch">
+         
+        </include>
+
+</launch>

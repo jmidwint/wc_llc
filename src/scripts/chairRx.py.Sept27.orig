@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+# Chair Receive Serial Node
+# =========================
+#   Receive on serial port and publish on "chair" topic
+
+import rospy
+import sys
+import serial
+from std_msgs.msg import String, Header
+
+ser = serial.Serial('/dev/ttyACM0',115200)
+
+h = Header()
+
+    
+def chairRx():
+    pub = rospy.Publisher('chair', String, queue_size=3)
+    rospy.init_node('chairRx', anonymous=True)
+    while True:
+        # Wait until message arrives on serial port
+        data = ser.readline()
+        rospy.loginfo(rospy.get_caller_id() + " Received on serial port %s", data)
+        h.stamp = rospy.Time.now()
+        #TODO fill in header with timestamp, also check data is valid.
+        pub.publish(String(data))
+    rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        print("chairRx started to read from serial to publish to chair")
+        chairRx()
+    except rospy.ROSInterruptException:
+        pass
+

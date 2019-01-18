@@ -1,0 +1,4 @@
+# Files to Be Ignored When Committing Changes
+
+# Editor files
+*.swo

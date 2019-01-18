@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+       <!-- Launch all video and nodes for the pi3
+          These are many args to collect and pass to the video stream generator of the camera. 
+          The defaults can be overriden by the user calling this launch file with the argument name and value to be overriden.
+
+          roslaunch chair_pi3 chair.experiment.launch video_stream_provider:=0 buffer_queue_size:=1 
+
+         --> 
+      
+  	<arg name="camera_name" default="camera" />
+  	<arg name="set_camera_fps" default="30" />
+  	<arg name="buffer_queue_size" default="100" />
+  	<arg name="fps" default="30" />
+  	<arg name="frame_id" default="$(arg camera_name)" />
+        <arg name="camera_info_url" default="" />
+  	<arg name="flip_horizontal" default="false" />
+  	<arg name="flip_vertical" default="false" />
+        <arg name="width" default="0"/>
+        <arg name="height" default="0"/>
+	<arg name="visualize" default="false"/>
+
+  	<!-- video_stream_provider can be a number as a video device or a url of a video stream -->
+  	<arg name="video_stream_provider" default="0" />
+ 
+     
+        <include file="$(find video_stream_opencv)/launch/camera.launch">
+           <arg name="video_stream_provider" value="$(arg video_stream_provider)"/>
+  	   <arg name="camera_name"  value="$(arg camera_name)"/>
+  	   <arg name="set_camera_fps"  value="$(arg set_camera_fps)"  />
+  	   <arg name="buffer_queue_size" value="$(arg buffer_queue_size)"/>
+  	   <arg name="fps"  value="$(arg fps)" />
+  	   <arg name="frame_id" value="$(arg frame_id)" />
+           <arg name="camera_info_url"  value="$(arg camera_info_url)"/>
+  	   <arg name="flip_horizontal" value="$(arg flip_horizontal)"/>
+  	   <arg name="flip_vertical" value="$(arg flip_vertical)"/>
+           <arg name="width" value="$(arg width)"/>
+           <arg name="height"  value="$(arg height)"/>
+	   <arg name="visualize" value="$(arg visualize)"/>
+
+           
+        </include>
+
+        <include file="$(find chair_pi3)/launch/chair.launch">
+         
+        </include>
+
+</launch>
