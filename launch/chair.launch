@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
    <!-- Launch the nodes to communicate with the serial port to the chair arduino -->
-   <node pkg="chair_pi3" type="chairTx.py" name="chairTx" output="screen"/>
-   <node pkg="chair_pi3" type="chairRx.py" name="chairRx"  output="screen"/>
+   <node pkg="wc_llc" type="chairTx.py" name="chairTx" output="screen"/>
+   <node pkg="wc_llc" type="chairRx.py" name="chairRx"  output="screen"/>
 
 </launch>

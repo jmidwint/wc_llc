@@ -24,7 +24,7 @@
            <arg name="video_stream_provider" value="$(arg video_stream_provider)"/>
         </include>
 
-        <include file="$(find chair_pi3)/launch/chair.launch">
+        <include file="$(find wc_llc)/launch/chair.launch">
          
         </include>
 

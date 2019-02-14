@@ -4,7 +4,7 @@
           These are many args to collect and pass to the video stream generator of the camera. 
           The defaults can be overriden by the user calling this launch file with the argument name and value to be overriden.
 
-          roslaunch chair_pi3 chair.experiment.launch video_stream_provider:=0 buffer_queue_size:=1 
+          roslaunch wc_llc chair.experiment.launch video_stream_provider:=0 buffer_queue_size:=1 
 
          --> 
       
@@ -41,7 +41,7 @@
            
         </include>
 
-        <include file="$(find chair_pi3)/launch/chair.launch">
+        <include file="$(find wc_llc)/launch/chair.launch">
          
         </include>
 
