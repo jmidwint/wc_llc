@@ -1,7 +1,24 @@
 <?xml version="1.0"?>
 <launch>
+   
+   <arg name="arduino_device_name" default="/dev/ttyACM0" />
+   <arg name="arduino_device_baud" default="115200"/>
+
+
+   <param name="arduino_device_name" value="$(arg arduino_device_name)"/>
+   <param name="arduino_device_baud" value="$(arg arduino_device_baud)"/>
+
    <!-- Launch the nodes to communicate with the serial port to the chair arduino -->
-   <node pkg="wc_llc" type="chairTx.py" name="chairTx" output="screen"/>
-   <node pkg="wc_llc" type="chairRx.py" name="chairRx"  output="screen"/>
+   <!--    roslaunch wc_llc chair.launch arduino_device_name:="/dev/ttyUSB0"      -->
+
+   <node name="chairTx" pkg="wc_llc" type="chairTx.py"  output="screen">
+
+   </node>
+
+
+   <node name="chairRx" pkg="wc_llc" type="chairRx.py"  output="screen">
+
+   </node>
+
 
 </launch>

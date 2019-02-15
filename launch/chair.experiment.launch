@@ -41,8 +41,14 @@
            
         </include>
 
+       <!-- WC Arduino Serial Node Communications --> 
+        <arg name="arduino_device_name" default="/dev/ttyACM0" />
+        <arg name="arduino_device_baud" default="115200"/>
+
         <include file="$(find wc_llc)/launch/chair.launch">
-         
+            <arg name="arduino_device_name" value="$(arg arduino_device_name)" />
+            <arg name="arduino_device_baud" value="$(arg arduino_device_baud)"/>
+       
         </include>
 
 </launch>

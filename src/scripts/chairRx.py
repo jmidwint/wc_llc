@@ -4,7 +4,7 @@
 # =========================
 #   Receive on serial port and publish on "chair" topic
 
-
+import select
 import rospy
 import sys
 import serial
@@ -12,29 +12,39 @@ from std_msgs.msg import String
 
 from wc_msgs.msg import ChairRx
 
-ARDUINO = '/dev/ttyUSB0' #'/dev/ttyACM0' --- depending on the arduino hw  TODO: make this a parm 
-ser = serial.Serial(ARDUINO,115200)
+
+
+#ARDUINO = '/dev/ttyUSB0' #'/dev/ttyACM0' --- depending on the arduino hw
+
+#TODO: should be in a  class
+# Load our ROS Parameters
+arduino_name = rospy.get_param('/arduino_device_name')
+arduino_baud = rospy.get_param('/arduino_device_baud')
+ser = serial.Serial(arduino_name, arduino_baud)
     
 def chairRx():
-    pub = rospy.Publisher('chair', ChairRx, queue_size=10)  # using new message type to add timestamp
-    # pub = rospy.Publisher('chair', String, queue_size=10) " old message type String
+    pub = rospy.Publisher('chair', ChairRx, queue_size=10)
     rospy.init_node('chairRx', anonymous=True)
+
     msg = ChairRx()
     while True:
         # Wait until message arrives on serial port
         data = ser.readline()
-        rospy.loginfo(rospy.get_caller_id() + " Received on serial port %s", data )
-        #TODO fill in header with timestamp, also check data is valid.
+        #rospy.loginfo(rospy.get_caller_id() + " Received on serial port %s", data )
         msg.header.stamp = rospy.Time.now()
         msg.data.data = str(data)
         pub.publish(msg)
         #pub.publish(data)
     #rospy.spin()
 
+
 if __name__ == '__main__':
     try:
-        print("chairRx started to read from serial to publish to topic chair")
+        rospy.loginfo("Node chairRx starting ...")
         chairRx()
-    except rospy.ROSInterruptException:
-        pass
+    except Exception : # (rospy.ROSInterruptException, select.error):
+        # rospy.logwarn("Interrupted... Stopping.")
+        raise
+
+    
 
