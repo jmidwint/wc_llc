@@ -15,10 +15,8 @@
 
    </node>
 
-
    <node name="chairRx" pkg="wc_llc" type="chairRx.py"  output="screen">
 
    </node>
-
 
 </launch>

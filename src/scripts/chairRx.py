@@ -10,7 +10,7 @@ import sys
 import serial
 from std_msgs.msg import String
 
-from wc_msgs.msg import ChairRx
+from wc_msgs.msg import Chair
 
 
 
@@ -23,14 +23,14 @@ arduino_baud = rospy.get_param('/arduino_device_baud')
 ser = serial.Serial(arduino_name, arduino_baud)
     
 def chairRx():
-    pub = rospy.Publisher('chair', ChairRx, queue_size=10)
+    pub = rospy.Publisher('chair', Chair, queue_size=10)
     rospy.init_node('chairRx', anonymous=True)
 
-    msg = ChairRx()
+    msg = Chair()
     while True:
         # Wait until message arrives on serial port
-        data = ser.readline()
-        #rospy.loginfo(rospy.get_caller_id() + " Received on serial port %s", data )
+        data = ser.readline().strip()
+        # rospy.loginfo(rospy.get_caller_id() + " Received on serial port %s", data )
         msg.header.stamp = rospy.Time.now()
         msg.data.data = str(data)
         pub.publish(msg)
@@ -40,7 +40,7 @@ def chairRx():
 
 if __name__ == '__main__':
     try:
-        rospy.loginfo("Node chairRx starting ...")
+        rospy.loginfo("Node chairRx starting ... receive serial i/f to /chair")
         chairRx()
     except Exception : # (rospy.ROSInterruptException, select.error):
         # rospy.logwarn("Interrupted... Stopping.")
