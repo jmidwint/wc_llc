@@ -28,4 +28,4 @@ This will set the the buffer queue size to 1 for webcam being managed by the vid
 
 # Sending a text command directly to the chair (arduino).
 
-  rosrun wc_llc chairCmd.py <text-to-send>
+  rosrun wc_llc chairCmd.py "text-to-send"
