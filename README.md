@@ -24,3 +24,8 @@ roslaunch wc_llc chair.experiment.launch video_stream_provider:=0 buffer_queue_s
 
 
 This will set the the buffer queue size to 1 for webcam being managed by the video_stream_opencv, which means that the frames from the camera are dumped and only the latest frame is used & published to the camera topic. 
+
+
+# Sending a text command directly to the chair (arduino).
+
+  rosrun wc_llc chairCmd.py <text-to-send>
