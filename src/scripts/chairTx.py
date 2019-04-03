@@ -17,7 +17,7 @@ arduino_baud = rospy.get_param('/arduino_device_baud')
 ser = serial.Serial(arduino_name, arduino_baud)
 
 def callback(data):
-    # rospy.loginfo(rospy.get_caller_id() + " Sending out serial %s", data.data.data)
+    rospy.loginfo(rospy.get_caller_id() + " Sending out serial %s", data.data.data)
     ser.write(data.data.data)
     #client_socket.send(data.data)
     
