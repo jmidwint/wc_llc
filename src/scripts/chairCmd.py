@@ -17,9 +17,9 @@ parser.add_argument('text', type=str, help='A text command.')
 
 def chairSend(m):
     # Create the publisher
-    pub = rospy.Publisher('drive', Chair, queue_size=1)
+    pub = rospy.Publisher('drive', Chair, queue_size=1, latch=True)
     rospy.init_node('chairCmd', anonymous=True)
-
+    #rospy.sleep(0.5)
     msg = Chair()
     msg.header.stamp = rospy.Time.now()
     msg.data.data = m
