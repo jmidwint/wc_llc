@@ -8,6 +8,8 @@ from wc_msgs.msg import Chair
 import sys
 import argparse
 
+from chairCmd import chairSendByCmdLine
+
 # Create the parser
 def pair(arg):
     # For simplity, assume arg is a pair of strings
@@ -24,13 +26,18 @@ parser.add_argument('list', type=pair, nargs='+',
 pub = rospy.Publisher('drive', Chair, queue_size=1)
 rospy.init_node('chairTest', anonymous=True)
 
+ByCommandLine=True
 
 # Send a message to the chair 
 def chairSend(command):
-    msg = Chair()
-    msg.header.stamp = rospy.Time.now()
-    msg.data.data = command
-    pub.publish(msg)
+    if ByCommandLine: 
+        chairSendByCmdLine(command)
+    else: 
+        msg = Chair()
+        msg.header.stamp = rospy.Time.now()
+        msg.data.data = command
+        pub.publish(msg)
+
     rospy.loginfo("Sending command to chair: %s ", command)
 
 
