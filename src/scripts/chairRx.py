@@ -9,6 +9,7 @@ import rospy
 import sys
 import serial
 from std_msgs.msg import String
+from sensor_msgs.msg import Joy
 
 from wc_msgs.msg import Chair
 
@@ -25,8 +26,7 @@ ser = serial.Serial(arduino_name, arduino_baud)
 def chairRx():
     pub = rospy.Publisher('chair', Chair, queue_size=10)
     rospy.init_node('chairRx', anonymous=True)
-
-
+    
     while True:
         # Wait until message arrives on serial port
         data = ser.readline().strip()
