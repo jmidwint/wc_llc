@@ -36,19 +36,28 @@ def callback(msg):
     # Convert to chairJoy message & publish
     rospy.loginfo("chair message len is: {}".format (len(msg.data.data)))
     if (len(msg.data.data) == CHAIR_STR_LEN):
-        X, Y = 0.0, 0.0
+        x, y = 0.0, 0.0
         msgJoy = Joy()
         msgJoy.header.stamp = msg.header.stamp #rospy.Time.now()
-        # 
+        # Break out chait string message into ints components 
         fb, fb_amt, lr, lr_amt = chair[0], chair[1:3], chair[3], chair[4:6]
+        # Find forward/back & amounts
         if ("B" == fb):
-            Y = -float(fb_amt))
+            y = -float(fb_amt)
         elif ("F" == fb):
-            Y = float(fb_amt)
+            y = float(fb_amt)
         else:
-           rospy.logerr("Invalid chairJoy data string: {} yields fb as {}".format(chair,fb))
-           return              
-        msgJoy.axes = [ float(20), float(0) ]       
+           rospy.logerr("Invalid chairJoy data string: {} with first character as {}. Needs to be F or B".format(chair,fb))
+           return
+        # Find left/right & amounts
+        if ("L" == lr):
+            x = -float(lr_amt)
+        elif ("R" == lr):
+            x = float(lr_amt)
+        else:
+           rospy.logerr("Invalid chairJoy data string: {} with third character as {}. Needs to be L or R".format(chair,lr))
+           return                     
+        msgJoy.axes = [ float(x), float(y) ]       
         pubJoy.publish(msgJoy)
         rospy.loginfo("chairJoy message published: {}".format (msgJoy))
 
