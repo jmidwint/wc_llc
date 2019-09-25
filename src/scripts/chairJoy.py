@@ -68,8 +68,8 @@ def callback(msg):
 # TODO: Convert to class that loads parms, and creates ros log messages on start up
 
 def node():
-    rospy.init_node('chairJoy')
-    print('\n ROS node chairJoy started ')
+    rospy.init_node('chairJoyNode')
+    print('\n ROS node chairJoyNode started ')
     rospy.Subscriber("chair", Chair, callback)
     rospy.spin()
 

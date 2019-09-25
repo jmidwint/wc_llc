@@ -18,7 +18,11 @@
    </node>
 
    <!-- Launch the nodes to transform chair message to chairJoy -->
-   <node name="chairJoy" pkg="wc_llc" type="chairJoy.py"  output="screen">
+   <node name="chairJoyNode" pkg="wc_llc" type="chairJoy.py"  output="screen">
+   </node>
+
+   <!-- Launch the nodes to transform chairJoy message to chairTwist -->
+   <node name="chairTwistNode" pkg="wc_llc" type="chairTwist.py"  output="screen">
    </node>
 
 </launch>
