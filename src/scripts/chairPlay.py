@@ -95,7 +95,7 @@ def node():
     rospy.init_node('chairJoy')
     print('\n ROS node chairJoy started ')
     rospy.Subscriber("/cmd_vel", Twist, callback)
-    # chairJoy_pub = rospy.Publisher("drive", String, queue_size=5) # set to global
+    chairJoy_pub = rospy.Publisher("drive", String, queue_size=5) # set to global
     rospy.spin()
 
 if __name__ == '__main__':
