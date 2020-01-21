@@ -1,4 +1,14 @@
 #!/usr/bin/env python
+# 
+# This file supports driving the wheelchair by a remote Joy Stick, by converting
+#   /cmd_velocity to chair drive commands that will eventually be sent to the arduino board to 
+#   drive the wheelchair. 
+# 
+#   The joys stick is an xbox controller. Use left joy stick while X button is pressed.
+#   Joy stick signals are read by ros joy package and published on /joy.
+#   telop_twist_joy converts the  joy stick /joy to /cmd_vel topic for angular momentum and speed.
+#   
+#
 import roslib  # JKM; roslib.load_manifest('YOUR_PACKAGE_NAME_HERE')
 import rospy
 import tf.transformations
@@ -8,8 +18,11 @@ from geometry_msgs.msg import Twist
 import datetime
 import math
 from std_msgs.msg import String
-# Define the publisher topic here.
-chairJoy_pub = rospy.Publisher("drive", String, queue_size=5)
+from wc_msgs.msg import Chair
+
+
+# Define the publisher topic here. It needs to be global.
+chairJoy_pub = rospy.Publisher("drive", Chair, queue_size=5)
 
 # JKM - for debug
 JKM = True
@@ -84,18 +97,18 @@ def callback(msg):
     #if JKM: print ("JKM: lx /n az", lx, az)    
 
     # Convert to a drive cmd of one string of type standard message & publish
-    drive = String()
-    #drive.header.stamp = rospy.Time.now()
-    drive.data = convert_to_drive(az, lx)
+    drive = Chair()
+    drive.header.stamp = rospy.Time.now()
+    drive.data.data = convert_to_drive(az, lx)
     chairJoy_pub.publish(drive)
 
 # Define the node.Is both publisher and subscriber
 # TODO: Convert to class that loads parms, and creates ros log messages on start up
 def node():
-    rospy.init_node('chairJoy')
-    print('\n ROS node chairJoy started ')
+    rospy.init_node('chairDrive')
+    print('\n ROS node chairDrive started ')
     rospy.Subscriber("/cmd_vel", Twist, callback)
-    chairJoy_pub = rospy.Publisher("drive", String, queue_size=5) # set to global
+    #chairJoy_pub = rospy.Publisher("drive", Chair, queue_size=5) # set to global
     rospy.spin()
 
 if __name__ == '__main__':
