@@ -12,7 +12,7 @@
 import roslib  # JKM; roslib.load_manifest('YOUR_PACKAGE_NAME_HERE')
 import rospy
 import tf.transformations
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
 
 #JKM
 import datetime
@@ -48,7 +48,7 @@ def convert_to_drive(steer, speed):
 
     # Initialize to be stopped
     dir_fb='F' # 
-    vel_fb='20' #
+    vel_fb='00' #
     dir_lr='L' # 
     vel_lr='00' # 
 
@@ -62,7 +62,8 @@ def convert_to_drive(steer, speed):
     else: 
        # steer < 0
        dir_lr='R'
-    amount_lr=(abs(steer) * 4*MAX_RANGE)/math.pi
+    # amount_lr=(abs(steer) * 4*MAX_RANGE)/math.pi
+    amount_lr=abs(steer) * MAX_RANGE
     vel_lr=int(round(amount_lr)) 
 
     # Determie forward or back and how fast
@@ -90,8 +91,8 @@ def callback(msg):
     #rospy.loginfo("Angular Components: [%f, %f, %f]"%(msg.angular.x, msg.angular.y, msg.angular.z))
 
     # KFS
-    lx, ly, lz = msg.linear.x, msg.linear.y, msg.linear.z
-    ax, ay, az = msg.angular.x, msg.angular.y, msg.angular.z
+    lx, ly, lz = msg.twist.linear.x, msg.twist.linear.y, msg.twist.linear.z
+    ax, ay, az = msg.twist.angular.x, msg.twist.angular.y, msg.twist.angular.z
     #if JKM: print ("JKM: lx, ly, lz /n ax, ay, az ", lx, ly, lz, ax, ay, az  )
     print('Time: {:%H:%M:%S:}'.format(datetime.datetime.now()))
     #if JKM: print ("JKM: lx /n az", lx, az)    
@@ -107,7 +108,7 @@ def callback(msg):
 def node():
     rospy.init_node('chairDrive')
     print('\n ROS node chairDrive started ')
-    rospy.Subscriber("/cmd_vel", Twist, callback)
+    rospy.Subscriber("/cmd_vel", TwistStamped, callback)
     #chairJoy_pub = rospy.Publisher("drive", Chair, queue_size=5) # set to global
     rospy.spin()
 
