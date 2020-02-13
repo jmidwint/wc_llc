@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# A utility to send test sequence actions to the chair for test purposes.
+# A utility to send test /drive sequence actions to the chair for test purposes.
 
 import rospy
 from wc_msgs.msg import Chair 

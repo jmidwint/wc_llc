@@ -1,18 +1,26 @@
 #!/usr/bin/env python
 # 
-# This file supports driving the wheelchair by a remote Joy Stick, by converting
-#   /cmd_velocity to chair drive commands that will eventually be sent to the arduino board to 
-#   drive the wheelchair. 
+# This file supports driving the wheelchair by converting /cmd_vel topic to a /drive topic. The /drive topic is then
+#   later sent on to the arduino board through a ros node that converts  /drive to a  serial command expected by the arduino. 
+#
+#   The /cmd_vel topic is produced through number of ways:
+#
+#      1) as a "drive-by-wire" under human remote control using an xbox controller
 # 
-#   The joys stick is an xbox controller. Use left joy stick while X button is pressed.
-#   Joy stick signals are read by ros joy package and published on /joy.
-#   telop_twist_joy converts the  joy stick /joy to /cmd_vel topic for angular momentum and speed.
+#         The joys stick is an xbox controller. Use left joy stick while X button is pressed.
+#         Joy stick signals are read by ros joy package and published on /joy.
+#         telop_twist_joy converts the  joy stick /joy to /cmd_vel topic for angular momentum and speed.
+#
+#      2) as "autonomous" under control of the wc_perception model 
+#
+#      3) as a series of test commands
 #   
 #
 import roslib  # JKM; roslib.load_manifest('YOUR_PACKAGE_NAME_HERE')
 import rospy
 import tf.transformations
 from geometry_msgs.msg import TwistStamped
+from geometry_msgs.msg import Twist  # JKM switching to use this as this is coming from the MUXer
 
 #JKM
 import datetime
@@ -25,7 +33,7 @@ from wc_msgs.msg import Chair
 chairJoy_pub = rospy.Publisher("drive", Chair, queue_size=5)
 
 # JKM - for debug
-JKM = True
+JKM = False
 
 def convert_to_drive(steer, speed):
     ''' Converts the steer angle in radians to a direction left or right  
@@ -84,17 +92,19 @@ def convert_to_drive(steer, speed):
 
     
 
-def callback(msg):
+def callback(msg_received):
     #rospy.loginfo("Received a /cmd_vel message!")
-    print('Received a /cmd_vel message!')
+    #print('Received a /cmd_vel message!')
     #rospy.loginfo("Linear Components: [%f, %f, %f]"%(msg.linear.x, msg.linear.y, msg.linear.z))
     #rospy.loginfo("Angular Components: [%f, %f, %f]"%(msg.angular.x, msg.angular.y, msg.angular.z))
 
-    # KFS
-    lx, ly, lz = msg.twist.linear.x, msg.twist.linear.y, msg.twist.linear.z
-    ax, ay, az = msg.twist.angular.x, msg.twist.angular.y, msg.twist.angular.z
+    # JKM TODO: make this an if statement based on message type
+    # msg = msg_received.twist TwistStamped incoming message type
+    msg = msg_received # Twist message type    
+    lx, ly, lz = msg.linear.x, msg.linear.y, msg.linear.z
+    ax, ay, az = msg.angular.x, msg.angular.y, msg.angular.z
     #if JKM: print ("JKM: lx, ly, lz /n ax, ay, az ", lx, ly, lz, ax, ay, az  )
-    print('Time: {:%H:%M:%S:}'.format(datetime.datetime.now()))
+    #print('Time: {:%H:%M:%S:}'.format(datetime.datetime.now()))
     #if JKM: print ("JKM: lx /n az", lx, az)    
 
     # Convert to a drive cmd of one string of type standard message & publish
@@ -108,7 +118,8 @@ def callback(msg):
 def node():
     rospy.init_node('chairDrive')
     print('\n ROS node chairDrive started ')
-    rospy.Subscriber("/cmd_vel", TwistStamped, callback)
+    #rospy.Subscriber("/cmd_vel", TwistStamped, callback)
+    rospy.Subscriber("/twist_mux/cmd_vel", Twist, callback)
     #chairJoy_pub = rospy.Publisher("drive", Chair, queue_size=5) # set to global
     rospy.spin()
 
