@@ -47,8 +47,8 @@ def convert_to_drive(steer, speed):
            R = Right
      
     '''
-    MAX_RANGE=70.0
-    MAX_SPEED=70.0
+    MAX_RANGE=70.0 # TODO: make param
+    MAX_SPEED=70.0 # TODO: make param
     #drive_msg.dir_fb.data='F' # For now we always move forward in autonomous mode
     #drive_msg.vel_fb.data='20' # For now we always move at a fixed speed unless we have to stop
     #drive_msg.dir_lr.data='L' # Calculate this

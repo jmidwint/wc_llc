@@ -43,13 +43,14 @@ def chairSend(command):
 
 def chairTest(l):
     print (l)
-    # Send a GO command to the chair to start the test
+    #Send a GO command to the chair to start the test
     chairSend("GO0000")
     #rospy.sleep(0.5)
     for command, delay in l:
         chairSend(command)
         rospy.loginfo("Delay for: %s seconds.", delay)
         rospy.sleep(float(delay))
+
     #
     # Send final stop command
     chairSend("STOP00")
