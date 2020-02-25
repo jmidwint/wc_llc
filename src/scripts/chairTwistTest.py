@@ -31,7 +31,9 @@ JKM = True
 
 
 # Global: TODO: Make this a param
-chairTwistTest_out = '/chairTwistTest/cmd_vel'
+#  
+chairTwistTest_out = '/chairDriveCmd' # Send into chairController  # '/chairTwistTest/cmd_vel'
+
 
 if __name__ == '__main__':
 
