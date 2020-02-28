@@ -57,7 +57,7 @@ class ChairControl(object):
     
         # Subscribers
         # rospy.Subscriber('/tf', TFMessage, self.chairPoseCB) # Current Postion
-        rospy.Subscriber('/chairDriveCmd', Twist, self.chairDriveCmdCB) # New Drive command
+        rospy.Subscriber('/chairControl_TestCmd', Twist, self.chairControlCB) # New Drive command
         rospy.Subscriber('/control_effort', Float64, self.chairPIDControlCB) # Adapt the angular velocity
 
     def Start(self):
@@ -76,8 +76,8 @@ class ChairControl(object):
     # Handler to get a new chairDriveCmd
     # Note: getting Twist message but really the angular velocity field represents the desired relative angle
     #    - maybe I should look into using a POSE msg 
-    def chairDriveCmdCB(self, m):
-        rospy.loginfo('New chairDriveCmd received: linear_vel: %f relative_angle:%f ', m.linear.x, m.angular.z)
+    def chairControlCB(self, m):
+        rospy.loginfo('New chairControl command received: linear_vel: %f relative_angle:%f ', m.linear.x, m.angular.z)
         self.target_relative_orientation = m.angular.z
         self.target_speed = m.linear.x 
  
@@ -133,10 +133,13 @@ class ChairControl(object):
         # TEMP: Sending something, this will happen in controlCB message
         #control_amount = Float64()
         #control_amount.data = 0.0
-        control_effort = m.data  
+        control_effort = m.data
+        
+        # 1st order plant
+        # control_rate = (0.1 * self.target_orientation) + control_effort 
         msg = Twist()
         msg.linear.x = self.target_speed # temporary
-        msg.angular.z = self.target_orientation + control_effort # get this later when get a control message back                  
+        msg.angular.z = self.target_orientation + (0.001) * control_effort # get this later when get a control message back                  
         # Publish
         self._ChairControl_Pub.publish(msg)       
  
