@@ -30,7 +30,7 @@ from wc_msgs.msg import Chair
 
 
 # Define the publisher topic here. It needs to be global.
-chairJoy_pub = rospy.Publisher("drive", Chair, queue_size=5)
+chairDrive_pub = rospy.Publisher("drive", Chair, queue_size=5)
 
 # JKM - for debug
 JKM = False
@@ -111,7 +111,7 @@ def callback(msg_received):
     drive = Chair()
     drive.header.stamp = rospy.Time.now()
     drive.data.data = convert_to_drive(az, lx)
-    chairJoy_pub.publish(drive)
+    chairDrive_pub.publish(drive)
 
 # Define the node.Is both publisher and subscriber
 # TODO: Convert to class that loads parms, and creates ros log messages on start up

@@ -134,12 +134,9 @@ class ChairControl(object):
         #control_amount = Float64()
         #control_amount.data = 0.0
         control_effort = m.data
-        
-        # 1st order plant
-        # control_rate = (0.1 * self.target_orientation) + control_effort 
         msg = Twist()
-        msg.linear.x = self.target_speed # temporary
-        msg.angular.z = self.target_orientation + (0.001) * control_effort # get this later when get a control message back                  
+        msg.linear.x = self.target_speed # Fixed for now              
+        msg.angular.z = 0.1 * control_effort # effort , angular velocity , rate to turn              
         # Publish
         self._ChairControl_Pub.publish(msg)       
  
