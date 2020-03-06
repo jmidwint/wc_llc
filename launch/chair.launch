@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <launch>
+
+   <!-- Launch the nodes to communicate with the serial port to the chair arduino -->
+   <!--  The node & this launch file needs to be launched on the device where the physical serial port is connected -->
+   <!--  Example of launch command to invoke: -->
+   <!--                                       -->     
+   <!--    roslaunch wc_llc chair.launch arduino_device_name:="/dev/ttyUSB0" -->
+   
    
    <arg name="arduino_device_name" default="/dev/ttyACM0" />
    <arg name="arduino_device_baud" default="115200"/>

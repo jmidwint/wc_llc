@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+
+   <!-- Launch the IMU nodes  -->
+   <!--  The node & this launch file needs to be launched on the device where the IMU device is pysically connected -->
+   <!--  Example of launch command to invoke: -->
+   <!--                                       -->     
+   <!--   roslaunch wc_llc chair.imu.launch wc_imu_period:="100" -->
+ 
+   <arg name="wc_imu_period" default="100"/> 
+   <param name="wc_imu_period" value="$(arg wc_imu_period)"/>  # supported data rates: 4 8 16 24 32 40 ... 1000 (in ms)
+    
+   <include file="$(find phidgets_imu)/launch/imu_single_nodes.launch">
+      <arg name="period" value="$(arg wc_imu_period)"/>
+   </include>
+   
+
+</launch>
