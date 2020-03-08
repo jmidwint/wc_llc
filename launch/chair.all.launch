@@ -18,14 +18,20 @@
         -->
   	<!-- video_stream_provider can be a number as a video device or a url of a video stream -->
   	<arg name="video_stream_provider" default="0" />
- 
+
+  	<!-- wc_imu_period is the data rate to set for the IMU 
+     # supported data rates: 4 8 16 24 32 40 ... 1000 (in ms) -->
+    <arg name="wc_imu_period" default="100"/>
      
         <include file="$(find video_stream_opencv)/launch/camera.launch">
            <arg name="video_stream_provider" value="$(arg video_stream_provider)"/>
         </include>
 
-        <include file="$(find wc_llc)/launch/chair.launch">
-         
+        <include file="$(find wc_llc)/launch/chair.launch">        
         </include>
+
+        <include file="$(find wc_llc)/launch/chair.imu.launch">         
+        </include>
+
 
 </launch>

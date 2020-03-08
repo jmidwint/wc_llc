@@ -6,7 +6,9 @@
    <!--  Example of launch command to invoke: -->
    <!--                                       -->     
    <!--   roslaunch wc_llc chair.imu.launch wc_imu_period:="100" -->
- 
+
+   <!-- wc_imu_period is the data rate to set for the IMU 
+   # supported data rates: 4 8 16 24 32 40 ... 1000 (in ms) -->
    <arg name="wc_imu_period" default="100"/> 
    <param name="wc_imu_period" value="$(arg wc_imu_period)"/>  # supported data rates: 4 8 16 24 32 40 ... 1000 (in ms)
     
